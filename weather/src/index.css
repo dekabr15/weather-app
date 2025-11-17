@@ -79,3 +79,8 @@
 .dmsans {
   font-family: 'DMSans', sans-serif;
 }
+
+.no-drag {
+  -webkit-user-drag: none;
+  user-drag: none;
+}
