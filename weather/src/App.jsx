@@ -10,9 +10,9 @@ import DailyCard from "./components/DailyCard";
 function App() {
   return (
     <>
-      <div className=" min-h-screen bg-[#02012C] text-slate-100 flex justify-center">
-        <section className="w-[1216px] flex flex-col">
-          <header className="mt-12    h-[43px]  dmsans text-base font-medium flex justify-between">
+      <div className=" min-h-screen bg-[#02012C] text-slate-100 flex justify-center ">
+        <section className="w-[95%] flex flex-col   md:w-[720px] lg:w-[1216px]  lg:max-w-[95%]">
+          <header className="mt-12    h-[43px]  dmsans text-base font-medium flex justify-between  ">
             <img
               src={logo}
               alt="logo-weather-app"
@@ -40,8 +40,8 @@ function App() {
           </header>
 
           <div className="mt-16 ">
-            <div>
-              <h1 className="bricolage flex justify-center font-bold text-[52px]">
+            <div className="flex flex-col justify-center">
+              <h1 className="bricolage flex justify-center font-bold text-[52px] text-center w-[343px] mx-auto md:w-[482px] lg:w-[731px]">
                 How’s the sky looking today?
               </h1>
               <div className="flex justify-center mt-16">
@@ -49,24 +49,24 @@ function App() {
               </div>
             </div>
 
-            <div className="flex justify-between  mt-12">
-              <div className="w-[800px]  ">
+            <div className="flex flex-col mt-12 lg:flex-row lg:items-start lg:gap-6">
+              <div className="w-full lg:flex-1 lg:max-w-[800px] lg:min-w-0">
                 <CurrentWeatherCard />
 
-                <div className="flex justify-between">
+                <div className=" mt-5 w-full grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4 ">
                   <DetailsCards />
                   <DetailsCards />
                   <DetailsCards />
                   <DetailsCards />
                 </div>
 
-                <div className=" flex flex-col mt-12 h-[209px]  ">
+                <div className=" flex flex-col mt-9  ">
                   <div>
                     <p className="dmsans text-xl font-semibold  ">
                       Daily forecast
                     </p>
                   </div>
-                  <div className="flex justify-between mt-3">
+                  <div className="  w-full grid grid-cols-3 gap-3 md:grid-cols-7 md:gap-4  mt-2">
                     <DailyCard />
                     <DailyCard />
                     <DailyCard />
@@ -78,7 +78,7 @@ function App() {
                 </div>
               </div>
 
-              <div className="w-[384px]  bg-white/10">
+              <div className=" w-full lg:w-[384px]  mt-8 lg:mt-0 mb-10">
                 <HourlyCard />
               </div>
             </div>
