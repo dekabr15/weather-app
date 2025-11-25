@@ -13,17 +13,19 @@ import GeoCode from "./api/GeoCode";
 function App() {
   const [inputCity, setInputCity] = useState("");
   const [geoCodeData, setGeoCodeData] = useState(null);
-  const [selectedCity, setSelectedCity] = useState(null); //  объект выбранного геокодинга
+
+  const [selectedCity, setSelectedCity] = useState(null);
+
+  const [activeCity, setActiveCity] = useState(null);
+
   const [weatherData, setWeatherData] = useState(null);
 
   useEffect(() => {
     const trimmed = inputCity.trim();
-
     if (trimmed.length < 3) {
       setGeoCodeData(null);
       return;
     }
-
     const timerId = setTimeout(async () => {
       try {
         const data = await GeoCode(trimmed);
@@ -36,8 +38,8 @@ function App() {
     return () => clearTimeout(timerId);
   }, [inputCity]);
 
-  async function handleWeatherSearch(city) {
-    const cityToUse = city || selectedCity;
+  async function handleWeatherSearch(cityFromButton) {
+    const cityToUse = cityFromButton || selectedCity;
 
     if (!cityToUse) {
       console.warn("Город не выбран");
@@ -45,8 +47,12 @@ function App() {
     }
 
     try {
+      setWeatherData(null);
+
       const data = await WeatherService(cityToUse);
       setWeatherData(data);
+
+      setActiveCity(cityToUse);
     } catch (err) {
       console.error("WeatherService error:", err);
     }
@@ -87,6 +93,7 @@ function App() {
             <h1 className="bricolage flex justify-center font-bold text-[52px] text-center w-[343px] mx-auto md:w-[482px] lg:w-[731px]">
               How’s the sky looking today?
             </h1>
+
             <div className="flex justify-center mt-16">
               <SearchBar
                 inputCity={inputCity}
@@ -103,14 +110,11 @@ function App() {
             <div className="w-full lg:flex-1 lg:max-w-[800px] lg:min-w-0">
               <CurrentWeatherCard
                 weatherData={weatherData}
-                selectedCity={selectedCity}
+                selectedCity={activeCity}
               />
 
               <div className="mt-5 w-full grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
-                <DetailsCards />
-                <DetailsCards />
-                <DetailsCards />
-                <DetailsCards />
+                <DetailsCards weatherData={weatherData} />
               </div>
 
               <div className="flex flex-col mt-9">
@@ -118,13 +122,10 @@ function App() {
                   <p className="dmsans text-xl font-semibold">Daily forecast</p>
                 </div>
                 <div className="w-full grid grid-cols-3 gap-3 md:grid-cols-7 md:gap-4 mt-2">
-                  <DailyCard />
-                  <DailyCard />
-                  <DailyCard />
-                  <DailyCard />
-                  <DailyCard />
-                  <DailyCard />
-                  <DailyCard />
+                  <DailyCard
+                    weatherData={weatherData}
+                    selectedCity={activeCity}
+                  />
                 </div>
               </div>
             </div>

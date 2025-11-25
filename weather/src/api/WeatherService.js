@@ -17,12 +17,14 @@ export default async function WeatherService(selectedCity) {
       "precipitation",
     ],
     current: ["weather_code", "temperature_2m"],
+    daily: ["weather_code", "temperature_2m_max", "temperature_2m_min"],
     timezone: selectedCity.timezone || "auto",
   };
 
   const url = "https://api.open-meteo.com/v1/forecast";
   const responses = await fetchWeatherApi(url, params);
 
+  
   const response = responses[0];
 
   const latitude = response.latitude();
@@ -41,37 +43,69 @@ export default async function WeatherService(selectedCity) {
 
   const current = response.current();
   const hourly = response.hourly();
+  const daily = response.daily();  
+
+  // --- CURRENT ---
+  const weatherCurrent = {
+    time: new Date(
+      (Number(current.time()) + utcOffsetSeconds) * 1000
+    ),
+    weather_code: current.variables(0).value(),
+    temperature_2m: current.variables(1).value(),
+  };
+
+  // --- HOURLY ---
+  const hourlyTimeStart = Number(hourly.time());
+  const hourlyTimeEnd = Number(hourly.timeEnd());
+  const hourlyInterval = hourly.interval();
+
+  const weatherHourly = {
+    time: Array.from(
+      {
+        length: (hourlyTimeEnd - hourlyTimeStart) / hourlyInterval,
+      },
+      (_, i) =>
+        new Date(
+          (hourlyTimeStart + i * hourlyInterval + utcOffsetSeconds) * 1000
+        )
+    ),
+    temperature_2m: hourly.variables(0).valuesArray(),
+    relative_humidity_2m: hourly.variables(1).valuesArray(),
+    weather_code: hourly.variables(2).valuesArray(),
+    wind_speed_10m: hourly.variables(3).valuesArray(),
+    apparent_temperature: hourly.variables(4).valuesArray(),
+    precipitation: hourly.variables(5).valuesArray(),
+  };
+
+  // --- DAILY ---
+  const dailyTimeStart = Number(daily.time());
+  const dailyTimeEnd = Number(daily.timeEnd());
+  const dailyInterval = daily.interval();
+
+  const weatherDaily = {
+    time: Array.from(
+      {
+        length: (dailyTimeEnd - dailyTimeStart) / dailyInterval,
+      },
+      (_, i) =>
+        new Date(
+          (dailyTimeStart + i * dailyInterval + utcOffsetSeconds) * 1000
+        )
+    ),
+    weather_code: daily.variables(0).valuesArray(),
+    temperature_2m_max: daily.variables(1).valuesArray(),
+    temperature_2m_min: daily.variables(2).valuesArray(),
+  };
 
   const weatherData = {
-    current: {
-      time: new Date(
-        (Number(current.time()) + utcOffsetSeconds) * 1000
-      ),
-      weather_code: current.variables(0).value(),
-      temperature_2m: current.variables(1).value(),
-    },
-    hourly: {
-      time: Array.from(
-        {
-          length:
-            (Number(hourly.timeEnd()) - Number(hourly.time())) /
-            hourly.interval(),
-        },
-        (_, i) =>
-          new Date(
-            (Number(hourly.time()) +
-              i * hourly.interval() +
-              utcOffsetSeconds) *
-              1000
-          )
-      ),
-      temperature_2m: hourly.variables(0).valuesArray(),
-      relative_humidity_2m: hourly.variables(1).valuesArray(),
-      weather_code: hourly.variables(2).valuesArray(),
-      wind_speed_10m: hourly.variables(3).valuesArray(),
-      apparent_temperature: hourly.variables(4).valuesArray(),
-      precipitation: hourly.variables(5).valuesArray(),
-    },
+    latitude,
+    longitude,
+    elevation,
+    timezone,
+    utcOffsetSeconds,
+    current: weatherCurrent,
+    hourly: weatherHourly,
+    daily: weatherDaily,    
   };
 
   console.log(
@@ -80,6 +114,5 @@ export default async function WeatherService(selectedCity) {
     `\nCurrent temperature_2m: ${weatherData.current.temperature_2m}`,
   );
 
- 
   return weatherData;
 }
