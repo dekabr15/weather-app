@@ -63,7 +63,7 @@ export default function SearchBar({
               type="text"
               ref={inputSityValue}
               onChange={handleInputChange}
-              className="w-full h-14 bg-[#262540] rounded-lg pl-15 dmsans font-medium text-xl placeholder:text-[#D4D3D9] outline-none cursor-pointer"
+              className="w-full h-14 bg-[#262540] hover:bg-[#3C3B5E]  rounded-lg pl-15 dmsans font-medium text-xl placeholder:text-[#D4D3D9] outline-none cursor-pointer"
               placeholder="Search for a place..."
             />
 

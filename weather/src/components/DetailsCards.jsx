@@ -1,10 +1,29 @@
 import Cards from "./Cards";
 
-export default function DetailsCards({ weatherData }) {
+export default function DetailsCards({ weatherData, lang }) {
+  console.log(lang);
+
+  const LABELS = {
+    en: {
+      feelsLike: "Feels Like",
+      humidity: "Humidity",
+      wind: "Wind",
+      cloudiness: "Cloudiness",
+    },
+    ru: {
+      feelsLike: "Ощущается как",
+      humidity: "Влажность",
+      wind: "Ветер",
+      cloudiness: "Облачность",
+    },
+  };
+
+  const labels = LABELS[lang] || LABELS.en;
+
   const detailItems = [
     {
       key: "feelsLike",
-      label: "Feels Like",
+      label: labels.feelsLike,
       value: weatherData
         ? +Math.round(weatherData.current.temperature_2m)
         : "-",
@@ -12,25 +31,23 @@ export default function DetailsCards({ weatherData }) {
     },
     {
       key: "humidity",
-      label: "Humidity",
+      label: labels.humidity,
       value: weatherData ? +weatherData.hourly.relative_humidity_2m[0] : "-",
       unit: "%",
     },
     {
       key: "wind",
-      label: "Wind",
+      label: labels.wind,
       value: weatherData
         ? +Math.round(weatherData.hourly.wind_speed_10m[0])
         : "-",
       unit: " m/s",
     },
     {
-      key: "precipitation",
-      label: "Precipitation",
-      value: weatherData
-        ? +Math.round(weatherData.hourly.precipitation[0])
-        : "-",
-      unit: " mm",
+      key: "cloudiness",
+      label: labels.cloudiness,
+      value: weatherData ? +Math.round(weatherData.hourly.cloud_cover[0]) : "-",
+      unit: "%",
     },
   ];
 

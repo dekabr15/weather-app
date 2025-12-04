@@ -14,7 +14,7 @@ export default async function WeatherService(selectedCity) {
       "weather_code",
       "wind_speed_10m",
       "apparent_temperature",
-      "precipitation",
+      "cloud_cover", 
     ],
     current: ["weather_code", "temperature_2m"],
     daily: ["weather_code", "temperature_2m_max", "temperature_2m_min"],
@@ -74,7 +74,7 @@ export default async function WeatherService(selectedCity) {
     weather_code: hourly.variables(2).valuesArray(),
     wind_speed_10m: hourly.variables(3).valuesArray(),
     apparent_temperature: hourly.variables(4).valuesArray(),
-    precipitation: hourly.variables(5).valuesArray(),
+    cloud_cover: hourly.variables(5).valuesArray()
   };
 
   // --- DAILY ---

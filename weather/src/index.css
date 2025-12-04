@@ -84,3 +84,36 @@
   -webkit-user-drag: none;
   user-drag: none;
 }
+
+
+/* Для Firefox */
+.custom-scrollbar {
+  scrollbar-width: thin; /* тонкий */
+  scrollbar-color: rgba(148, 163, 184, 0.6) transparent;
+}
+
+/* Для Chrome / Edge / Safari */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;            /* ширина полосы прокрутки */
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent; /* фон трека */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.6); /* сам ползунок */
+  border-radius: 999px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.9);
+}
+
+.custom-scrollbar {
+  scrollbar-width: none; /* Firefox */
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  display: none;         /* Chrome/Safari */
+}

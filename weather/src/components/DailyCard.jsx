@@ -1,11 +1,9 @@
 import Cards from "./Cards";
 import WeatherIcon from "./WeatherIcon";
-import { languageDetector } from "../api/GeoCode.js";
 
-export default function DailyCard({ weatherData, selectedCity }) {
+export default function DailyCard({ weatherData, selectedCity, lang }) {
   if (!weatherData || !weatherData.daily || !selectedCity) {
     const placeholders = Array.from({ length: 7 });
-
     return (
       <>
         {placeholders.map((_, index) => (
@@ -16,8 +14,8 @@ export default function DailyCard({ weatherData, selectedCity }) {
             <p className="dmsans text-sm text-[#D4D3D9] opacity-40">---</p>
             <div className="w-12 h-12 rounded-full bg-white/5 opacity-40" />
             <div className="flex flex-row justify-between w-full px-6 text-[#D4D3D9] opacity-40">
-              <p className="dmsans text-[14px]">-°</p>
-              <p className="dmsans text-[14px]">-°</p>
+              <p className="dmsans text-[14px]">-</p>
+              <p className="dmsans text-[14px]">-</p>
             </div>
           </Cards>
         ))}
@@ -25,7 +23,6 @@ export default function DailyCard({ weatherData, selectedCity }) {
     );
   }
 
-  const lang = languageDetector(selectedCity.name);
   const locale = lang === "ru" ? "ru-RU" : "en-US";
 
   const dailyItems = weatherData.daily.time.map((date, index) => ({
