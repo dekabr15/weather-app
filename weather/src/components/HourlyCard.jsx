@@ -4,7 +4,7 @@ import WeatherIcon from "./WeatherIcon";
 import iconDropdown from "../assets/images/icon-dropdown.svg";
 import DropDownDays from "./DropDownDays";
 
-export default function HourlyCard({ weatherData, lang }) {
+export default function HourlyCard({ weatherData, lang, units }) {
   const placeholders = Array.from({ length: 24 });
 
   const [dropDownDays, setDropDownDays] = useState(false);
@@ -159,7 +159,9 @@ export default function HourlyCard({ weatherData, lang }) {
 
               <div>
                 <p className="text-xl dmsans font-medium">
-                  {item.temp}
+                  {units.temperature === "fahrenheit"
+                    ? Math.round((item.temp * 9) / 5 + 32)
+                    : item.temp}
                   {item.unit}
                 </p>
               </div>

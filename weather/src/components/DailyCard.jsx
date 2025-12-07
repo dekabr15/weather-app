@@ -1,7 +1,7 @@
 import Cards from "./Cards";
 import WeatherIcon from "./WeatherIcon";
 
-export default function DailyCard({ weatherData, selectedCity, lang }) {
+export default function DailyCard({ weatherData, selectedCity, lang, units }) {
   if (!weatherData || !weatherData.daily || !selectedCity) {
     const placeholders = Array.from({ length: 7 });
     return (
@@ -47,12 +47,16 @@ export default function DailyCard({ weatherData, selectedCity, lang }) {
 
           <div className="flex flex-row justify-between w-full px-6 dmsans text-[14px]">
             <p>
-              {item.minTemp}
+              {units.temperature === "fahrenheit"
+                ? Math.round((item.minTemp * 9) / 5) + 32
+                : item.minTemp}
               {item.unit}
             </p>
 
             <p>
-              {item.maxTemp}
+              {units.temperature === "fahrenheit"
+                ? Math.round((item.maxTemp * 9) / 5) + 32
+                : item.maxTemp}
               {item.unit}
             </p>
           </div>

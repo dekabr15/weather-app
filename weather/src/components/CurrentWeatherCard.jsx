@@ -3,7 +3,11 @@ import WeatherIcon from "./WeatherIcon";
 import iconLoading from "../assets/images/icon-loading.svg";
 import { languageDetector } from "../api/GeoCode.js";
 
-export default function CurrentWeatherCard({ weatherData, selectedCity }) {
+export default function CurrentWeatherCard({
+  weatherData,
+  selectedCity,
+  units,
+}) {
   const strBG =
     "bg-cover bg-no-repeat bg-center border-none bg-[url('/src/assets/images/bg-today-small.svg')] md:bg-[url('/src/assets/images/bg-today-large.svg')]";
 
@@ -39,7 +43,6 @@ export default function CurrentWeatherCard({ weatherData, selectedCity }) {
   return (
     <Cards className={`relative h-[286px] ${strBG}`}>
       <div className="h-full flex flex-col p-6 gap-3 md:flex-row md:items-center">
-        {/* ЛЕВЫЙ БЛОК: город + дата */}
         <div className="flex-1 text-center md:text-left md:pr-32">
           <h1 className="dmsans font-bold text-[38px] leading-tight">
             {selectedCity.name}, {selectedCity.country}
@@ -54,7 +57,10 @@ export default function CurrentWeatherCard({ weatherData, selectedCity }) {
             className="absolute right-50 w-[120px] h-[120px] z-0"
           />
           <p className="relative z-10 dmsans font-semibold italic text-[98px] leading-none pr-8">
-            {Math.round(weatherData.current.temperature_2m)}°
+            {units.temperature === "fahrenheit"
+              ? Math.round((weatherData.current.temperature_2m * 9) / 5 + 32)
+              : Math.round(weatherData.current.temperature_2m)}
+            °
           </p>
         </div>
       </div>

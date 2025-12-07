@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import Cards from "./Cards";
 import searchLogo from "../assets/images/icon-search.svg";
 
@@ -39,7 +39,6 @@ export default function SearchBar({
 
   function handleSelectCity(item) {
     setSelectedCity(item);
-    console.log("Выбрали город: ", item);
     if (inputSityValue.current) {
       inputSityValue.current.value = `${item.name}, ${item.country ?? ""}`;
     }

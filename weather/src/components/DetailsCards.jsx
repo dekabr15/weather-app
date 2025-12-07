@@ -1,6 +1,6 @@
 import Cards from "./Cards";
 
-export default function DetailsCards({ weatherData, lang }) {
+export default function DetailsCards({ weatherData, lang, units }) {
   console.log(lang);
 
   const LABELS = {
@@ -20,15 +20,34 @@ export default function DetailsCards({ weatherData, lang }) {
 
   const labels = LABELS[lang] || LABELS.en;
 
+  const WIND_UNITS = {
+    en: {
+      ms: " m/s",
+      mph: " mph",
+    },
+    ru: {
+      ms: " м/с",
+      mph: " миль/ч",
+    },
+  };
+
+  const windUnitLabel =
+    units.wind === "mph"
+      ? WIND_UNITS[lang]?.mph || WIND_UNITS.en.mph
+      : WIND_UNITS[lang]?.ms || WIND_UNITS.en.ms;
+
   const detailItems = [
     {
       key: "feelsLike",
       label: labels.feelsLike,
       value: weatherData
-        ? +Math.round(weatherData.current.temperature_2m)
+        ? units.temperature === "fahrenheit"
+          ? Math.round((weatherData.current.temperature_2m * 9) / 5 + 32)
+          : Math.round(weatherData.current.temperature_2m)
         : "-",
       unit: "°",
     },
+
     {
       key: "humidity",
       label: labels.humidity,
@@ -39,10 +58,13 @@ export default function DetailsCards({ weatherData, lang }) {
       key: "wind",
       label: labels.wind,
       value: weatherData
-        ? +Math.round(weatherData.hourly.wind_speed_10m[0])
+        ? units.wind === "mph"
+          ? Math.round(weatherData.hourly.wind_speed_10m[0] * 2.23694)
+          : Math.round(weatherData.hourly.wind_speed_10m[0])
         : "-",
-      unit: " m/s",
+      unit: windUnitLabel,
     },
+
     {
       key: "cloudiness",
       label: labels.cloudiness,

@@ -4,13 +4,7 @@ import iconUnits from "../assets/images/icon-units.svg";
 import iconDropdown from "../assets/images/icon-dropdown.svg";
 import DropDownHeader from "./DropDownHeader";
 
-const DEFAULT_UNITS = {
-  temperature: "celsius",
-  wind: "kmh",
-};
-
-export default function Header({ lang }) {
-  const [units, setUnits] = useState(DEFAULT_UNITS);
+export default function Header({ lang, units, setUnits }) {
   const [isUnitsOpen, setIsUnitsOpen] = useState(false);
   const unitsRef = useRef(null);
 
